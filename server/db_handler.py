@@ -10,7 +10,7 @@ while not engine:
         engine = create_engine(f'mysql://{DB_USER}:{DB_PASS}@{DB_HOST}', echo=True)
     except Exception as e:
         print('Failed to connect')
-        print(str(e.text))
+        print(str(e))
         time.sleep(5)
 
 while True:
@@ -19,7 +19,7 @@ while True:
         break
     except Exception as e:
         print('Failed to run command')
-        print(str(e.text))
+        print(str(e))
         time.sleep(20)
 engine.execute(f'USE {DB_NAME}')
 
