@@ -2,6 +2,7 @@ from craigslist import CraigslistHousing
 from collections import namedtuple
 import db_handler
 from config import *
+import time
 
 # Define geotag tuples
 Point = namedtuple('Point', ['lat', 'long'])
@@ -37,8 +38,10 @@ def main():
     sublets    = CraigslistHousing(site='santabarbara', category='sub', filters={'max_price': 1200, 'min_price': 700})
     sites      = [apartments, rooms, sublets]
 
-    for site in sites:
-        search(site)
+    while True:
+        for site in sites:
+            search(site)
+        time.sleep(10)
 
 if __name__ == '__main__':
     main()
