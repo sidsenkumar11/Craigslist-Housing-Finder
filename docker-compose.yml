@@ -13,6 +13,7 @@ services:
       - frontend
     ports:
       - 127.0.0.1:80:80 # Map port 80 on host to port 80 on nginx container (so http://localhost works on host)
+    restart: always
 
   flask:
     image: webapp-flask
@@ -30,6 +31,7 @@ services:
       - frontend
       - middlend
     read_only: true
+    restart: always
     tmpfs:
       - /tmp
 
@@ -47,7 +49,7 @@ services:
       - backend
     volumes:
       - /home/ssid/Desktop/craigslist/mysql:/var/lib/mysql
-    # restart: always
+    restart: always
 
   datapull:
     image: craigslist
@@ -64,6 +66,7 @@ services:
     networks:
       - backend
     read_only: true
+    restart: always
     tmpfs:
       - /tmp
     # restart: always

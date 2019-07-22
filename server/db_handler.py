@@ -59,7 +59,7 @@ def insert(result):
         'bedrooms'   : result['bedrooms'] if result['bedrooms'] else '-1',
         'area'       : result['area'] if result['area'] else 'No area given',
         'has_map'    : result['has_map'],
-        'repost_of'  : result['repost_of'] if result['repost_of'] else 'No repost of given',
+        'repost_of'  : result['repost_of'] if result['repost_of'] else 'No repost_of given',
     }
 
     ins = upsert(listings).values(

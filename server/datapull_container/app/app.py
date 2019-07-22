@@ -41,7 +41,7 @@ def main():
     while True:
         for site in sites:
             search(site)
-        time.sleep(10)
+        time.sleep(60 * 20) # 20 minutes
 
 if __name__ == '__main__':
     main()
