@@ -1,0 +1,74 @@
+version: '3'
+
+services:
+
+  nginx:
+    image: webapp-nginx
+    build:
+      context: server
+      dockerfile: nginx_container/Dockerfile
+    depends_on:
+      - flask
+    networks:
+      - frontend
+    ports:
+      - 127.0.0.1:80:80 # Map port 80 on host to port 80 on nginx container (so http://localhost works on host)
+
+  flask:
+    image: webapp-flask
+    build:
+      context: server
+      dockerfile: flask_container/Dockerfile
+    depends_on:
+      - dbhost
+    environment:
+      DB_HOST: dbhost
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+    networks:
+      - frontend
+      - middlend
+    read_only: true
+    tmpfs:
+      - /tmp
+
+  dbhost:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASS}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
+    expose:
+      - '3306'
+    networks:
+      - middlend
+      - backend
+    volumes:
+      - /home/ssid/Desktop/craigslist/mysql:/var/lib/mysql
+    # restart: always
+
+  datapull:
+    image: craigslist
+    build:
+      context: server
+      dockerfile: datapull_container/Dockerfile
+    depends_on:
+      - dbhost
+    environment:
+      DB_HOST: dbhost
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
+    networks:
+      - backend
+    read_only: true
+    tmpfs:
+      - /tmp
+    # restart: always
+
+networks:
+  frontend:
+  middlend:
+  backend:
