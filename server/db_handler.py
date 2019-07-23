@@ -7,7 +7,7 @@ import time
 engine = None
 while not engine:
     try: # Keep trying until sql server finishes init
-        engine = create_engine(f'mysql://{DB_USER}:{DB_PASS}@{DB_HOST}', echo=True)
+        engine = create_engine(f'mysql://{DB_USER}:{DB_PASS}@{DB_HOST}', echo=True, pool_recycle=3600)
     except Exception as e:
         print('Failed to connect')
         print(str(e))
@@ -15,7 +15,8 @@ while not engine:
 
 while True:
     try:
-        engine.execute(f'CREATE DATABASE IF NOT EXISTS {DB_NAME}')
+        with engine.begin() as conn:
+            conn.execute(f'CREATE DATABASE IF NOT EXISTS {DB_NAME}', autocommit=True)
         break
     except Exception as e:
         print('Failed to run command')
@@ -94,15 +95,11 @@ def insert(result):
         has_map    = real['has_map'],
         repost_of  = real['repost_of'],
     )
-    conn = engine.connect()
-    conn.execute(on_duplicate_key_ins)
-    conn.close()
+    with engine.begin() as conn:
+        conn.execute(on_duplicate_key_ins, autocommit=True)
 
 def get_all():
-    conn = engine.connect()
-    raw = conn.execute(listings.select())
-    conn.close()
-
+    raw = engine.execute(listings.select())
     results = {}
     for res in raw:
         print(type(res))
