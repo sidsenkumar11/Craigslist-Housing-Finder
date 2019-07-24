@@ -99,7 +99,11 @@ def insert(result):
         conn.execute(on_duplicate_key_ins, autocommit=True)
 
 def get_all():
-    raw = engine.execute(listings.select())
+    try:
+        raw = engine.execute(listings.select())
+    except:
+        engine.execute(f'USE {DB_NAME}')
+        raw = engine.execute(listings.select())
     results = {}
     for res in raw:
         print(type(res))

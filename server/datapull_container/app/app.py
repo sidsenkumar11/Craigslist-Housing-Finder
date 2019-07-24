@@ -33,9 +33,9 @@ def search(site):
 
 def main():
     # Create 3 searches for housing
-    apartments = CraigslistHousing(site='santabarbara', category='apa', filters={'max_price': 1200, 'min_price': 700})
-    rooms      = CraigslistHousing(site='santabarbara', category='roo', filters={'max_price': 1200, 'min_price': 700})
-    sublets    = CraigslistHousing(site='santabarbara', category='sub', filters={'max_price': 1200, 'min_price': 700})
+    apartments = CraigslistHousing(site='santabarbara', category='apa', filters={'max_price': 1250, 'min_price': 700})
+    rooms      = CraigslistHousing(site='santabarbara', category='roo', filters={'max_price': 1250, 'min_price': 700})
+    sublets    = CraigslistHousing(site='santabarbara', category='sub', filters={'max_price': 1250, 'min_price': 700})
     sites      = [apartments, rooms, sublets]
 
     while True:
